@@ -1,0 +1,82 @@
+create database testDatabase
+GO
+
+use testDatabase
+
+create table personas
+(
+	Id int not null identity(1,1) primary key ,
+	nombre varchar(50),
+	apellido varchar(100),
+	edad int
+)
+GO
+
+--creamos el procedimiento para insertar
+create proc insertardatos
+(
+	@nombre varchar(50),
+	@apellido varchar(100),
+	@edad int
+)
+as 
+insert into personas(nombre,apellido,edad) values (@nombre, @apellido, @edad)
+
+exec insertardatos 'juan','perez','31'
+go
+
+--creamos el procedimiento
+create proc buscarid
+@id int
+as
+select * from personas
+where Id = @id
+go
+
+--ejecutamos el procedimiento
+exec buscarid 1
+
+create proc buscarnombre
+@nombre varchar(50)
+as 
+select * from personas
+where nombre = @nombre
+go
+
+exec buscarnombre 'juan'
+
+--aqui buscamos por letra
+create proc buscarletra
+@nombre varchar(50)='%'
+as 
+select * from personas
+where nombre like @nombre + '%'
+go
+
+exec buscarletra 'j'
+
+
+-- creamos un procedimiento para eliminar un registro
+create proc eliminarrecord
+@id int
+as
+delete from personas
+where id = @id
+go
+
+exec eliminarrecord 1
+
+
+create proc updaterecord
+@id int,
+@nombre varchar(50),
+@apellido varchar(100),
+@edad int
+as 
+begin
+update personas set nombre=@nombre,apellido=@apellido,edad=@edad
+where id = @id
+end
+
+exec updaterecord 2,'pepe', 'perez',32
+go
