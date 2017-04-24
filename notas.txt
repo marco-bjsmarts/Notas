@@ -23,3 +23,5 @@ Get latest code from Repository
 Get the Repository
 ==================
 git clone https://github.com/marco-bjsmarts/proyectos.git
+
+git clone https://marco-bjsmarts:panino4891910@github.com/marco-bjsmarts/Notas.git
