@@ -1,0 +1,119 @@
+en visual studio 2015
+archivo-> new project
+
+select in Web
+ASP.NET Web Application(.NET Framework)
+seleccionamos una carpeta y creamo el proyecto
+en la siguiente ventana seleccionar Web API
+y ok
+
+se creara el proyecto 
+si no se crea revisar la version de framework
+
+se creara el web api en la carpeta controllers
+revisar el archivo ValuesController.cs
+
+suele a ver un tag [Authorize]
+para que no se errores de acceso podemos comentar
+esta linea de codigo
+
+creamo ahora una clase en la carpeta models
+Personas.cs
+aqui creamos los fields necesarios
+
+
+namespace WebApplication1.Models
+{
+    public class Personas
+    {
+        public int Id { get; set; }
+
+        public string nombre { get; set; }
+
+        public string apellido { get; set; }
+
+        public int edad { get; set; }
+    }
+}
+
+luego creamos un controller
+si es visual studio 2015 
+seleccionamos MVC5 
+en cualquier caso sera empty o mejor con acciones de 
+lectura y escritura
+
+salvo utilizemos 
+edmx con entity framework
+
+podemos guiarnos con el ValuesController creado por defecto
+podemos copiar algunos metodos
+
+debemos recordar que para que sea accesible el controlador debe tener
+el header
+
+public class ArticuloController : ApiController
+
+para que pueda ser reconocido 
+
+
+para probar el servicio lo corremos y 
+accedemos a la url con
+
+/api/Personas
+
+http://localhost:numberPort/api/Personas
+
+para eliminar el formato y entregar json
+<string xmlns="http://schemas.microsoft.com/2003/10/Serialization/">[
+  "Property1",
+  "Property2",
+]</string>
+
+podemos modificar el WebApiConfig en la carpeta App_Start
+
+
+public static class WebApiConfig
+ {
+  public static void Register(HttpConfiguration config)
+  {
+     config.Routes.MapHttpRoute(
+        name: "DefaultApi",
+        routeTemplate: "api/{controller}/{id}",
+        defaults: new { id = RouteParameter.Optional }
+    );
+
+       var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.
+      FirstOrDefault(t => t.MediaType ==      "application/xml");
+    config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+ }
+}
+
+
+una ves removido eso ya no es necesario serializer
+
+[
+	{
+		"Id": 0,
+		"nombre": "marco",
+		"apellido": "chipana",
+		"edad": 20
+	}
+]
+
+ya se puede crear metodos personalizados
+
+ [System.Web.Http.Route("api/getTest")]
+        public List<Personas> GetTest()
+        {
+            List<Personas> lstPersonas = new List<Personas>();
+            lstPersonas.Add(new Personas
+            {
+                nombre = "marco",
+                apellido = "chipana",
+                edad = 20
+            });
+            return lstPersonas;
+            //TODO: Acceder a datos en busca del artículo con Id que recibimos por filtro.
+            //var serializedObject = JsonConvert.SerializeObject(lstPersonas, Formatting.Indented);
+            //return serializedObject;
+        }
