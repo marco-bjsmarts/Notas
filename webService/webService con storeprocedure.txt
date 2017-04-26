@@ -117,3 +117,10 @@ ya se puede crear metodos personalizados
             //var serializedObject = JsonConvert.SerializeObject(lstPersonas, Formatting.Indented);
             //return serializedObject;
         }
+
+
+ // POST api/values
+        [System.Web.Http.HttpPost]
+        public void Post(Personas value)
+        {
+        }
